@@ -84,3 +84,15 @@ func (r *TransactionRepo) Delete(id uint) error {
 
 	return nil
 }
+
+// GET BY CATEGORY ID
+func (r *TransactionRepo) GetByCategoryID(categoryID uint) ([]models.Transaction, error) {
+	var transactions []models.Transaction
+
+	err := r.DB.Where("category_id = ?", categoryID).Order("date DESC").Find(&transactions).Error
+	if err != nil {
+		return nil, err
+	}
+
+	return transactions, nil
+}

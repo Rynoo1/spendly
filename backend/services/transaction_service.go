@@ -45,8 +45,7 @@ func (s *TransactionService) CreateTransaction(
 
 // READ ONE
 func (s *TransactionService) GetTransaction(
-	id uint,
-) (*models.Transaction, error) {
+	id uint) (*models.Transaction, error) {
 	if id == 0 {
 		return nil, errors.New("invalid transaction ID")
 	}
@@ -96,4 +95,12 @@ func (s *TransactionService) DeleteTransaction(
 		return errors.New("invalid transaction ID")
 	}
 	return s.Repo.Delete(id)
+}
+
+// READ ALL TRANSACTIONS BY CATEGORY ID
+func (s *TransactionService) GetTransactionsByCategoryID(categoryID uint) ([]models.Transaction, error) {
+	if categoryID == 0 {
+		return nil, errors.New("invalid category ID")
+	}
+	return s.Repo.GetByCategoryID(categoryID)
 }

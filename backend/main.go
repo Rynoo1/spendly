@@ -6,6 +6,9 @@ import (
 
 	"github.com/Rynoo1/spendly/backend/config"
 	"github.com/Rynoo1/spendly/backend/migrate"
+	"github.com/Rynoo1/spendly/backend/routes"
+	"github.com/Rynoo1/spendly/backend/services"
+	"github.com/gofiber/fiber/v3"
 )
 
 func main() {
@@ -31,4 +34,14 @@ func main() {
 		log.Fatalf("Migration failed: %v:", err)
 	}
 	fmt.Println("Database migrated successfully")
+
+	app := fiber.New()
+	appServices := services.NewAppServices(db)
+
+	routes.SetupRoutes(app, appServices, db)
+
+	log.Println("Starting spendly API server on :8080")
+	if err := app.Listen(":8080"); err != nil {
+		log.Fatalf("Server failed: %v", err)
+	}
 }
